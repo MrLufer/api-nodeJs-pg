@@ -1,14 +1,10 @@
-const Customer = require("../models/customer");
+const { db } = require("../config/queries");
 
-exports.getCustomers = async (req, res) => {
-  try {
-    let customers = await Customer.findAll({
-      limit: 72,
-      order: [["createdAt", "ASC"]],
-    });
-    res.json(customers);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
-  }
+exports.getCustomers = (req, res) => {
+  db.query("SELECT * FROM customers ORDER BY id ASC", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).json(results.rows);
+  });
 };
