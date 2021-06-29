@@ -22,3 +22,12 @@ exports.createCustomer = (req, res) => {
     }
   );
 };
+
+exports.getAvgAge = (req, res) => {
+  db.query("SELECT AVG(AGE(birth_date))   FROM customers", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).json(results.rows[0]);
+  });
+};
